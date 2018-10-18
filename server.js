@@ -1,3 +1,10 @@
+/*
+/movie/${id} when given the appropriate id, will yield the movie matching that identifier (more on where that id comes from shortly).
+/show/${id} when given the appropriate id, will yield the show matching that identifier.
+The above endpoints should contain, at minimum, the title, release year, and a synopsis of the media item being displayed.
+/search when given a `?query=${some title}`, will yield any movies or shows matching that title, returning a JSON of matching titles, the years the media items were released, and whether each media item is a movie or a show. These results should be paginated.
+*/
+
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
