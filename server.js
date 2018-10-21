@@ -25,7 +25,7 @@ mongoose.connect('mongodb://admin:temppass1@ds137263.mlab.com:37263/moviemeapi',
 
 var router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', function(req, res){
     res.json({message: 'api working'});
 });
 
@@ -50,6 +50,26 @@ router.route('/show')
         });
     });
 
+router.route('/movie')
+    .post(function(req, res){
+        var movie = new Movie();
+        movie.title = req.body.title;
+        movie.release_year = req.body.release_year;
+        movie.synopsis = req.body.synopsis;
+        movie._id = req.body.id;
+        movie.save(function(err){
+            if(err)
+                res.send(err);
+            res.json({message: 'movie saved'});
+        });
+    })
+    .get(function(req, res){
+        Movie.find(function(err, movie){
+            if(err)
+                res.send(err);
+            res.json(movie);
+        });
+    });
 
 router.route('/show/:show_id')
     .delete(function(req, res){
