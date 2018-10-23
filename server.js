@@ -74,28 +74,43 @@ router.route('/movie')
 router.route('/search')
     .get((req, res) => {
         let array_of_searches = [];
-        // var match = '/.*req.query[\'query\'],*/'.toString();
-
-        // var match = /^req.query[\'query\']$/i;
-        // var match = new RegExp([".*", req.query['query'], ".*"].join(""));
         var regex = new RegExp(["^.*", req.query['query'], ".*$"].join(""), "gi");
-        // var finalRegex = new RegExp(match.source + "|" + regex.source);
-        // console.log(finalRegex);
         Movie.find({
-            // _id: req.query['query']
-            // /^bar$/i
             title: regex
         }, (err, movie) => {
             if(err)
                 res.send(err);
-            // console.log('movie ' + show);
-            array_of_searches.push(movie);
-            res.json(array_of_searches)
+            
+            movie.forEach((element) => {
+                var movie_type = {
+                    _id: element._id,
+                    title: element.title,
+                    synopsis: element.synopsis,
+                    release_year: element.release_year,
+                    type: 'Movie'
+                }
+                array_of_searches.push(movie_type);
+            }); 
         });
-        // console.log(array_of_searches);
-        console.log(req.query['query']);
 
+        Show.find({
+            title: regex
+        }, (err, show) => {
+            if(err)
+                res.send(err);
 
+            show.forEach((element) => {
+                var show_type = {
+                    _id: element._id,
+                    title: element.title,
+                    synopsis: element.synopsis,
+                    release_year: element.release_year,
+                    type: 'Show'
+                }
+                array_of_searches.push(show_type);
+            });
+            res.json(array_of_searches);
+        });
     });
 
 
