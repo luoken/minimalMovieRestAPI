@@ -27,4 +27,4 @@ search based on titles
 
 
 
-working link can be found [here].(https://minimalmovierestapi.herokuapp.com/api/movie)
+working link can be found [here](https://minimalmovierestapi.herokuapp.com/api/movie).
