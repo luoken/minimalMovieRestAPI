@@ -1,8 +1,8 @@
-var request = require('request');
+const request = require('request');
 
 // http://www.omdbapi.com/?t=iron%20man&apikey=b4c680f4
 
-var array_of_movies = ['third watch', 'john doe', 'devious maids', 'the tick', 'goosebumps', 'mortal kombat: legacy', 'taxi', 'heroes', 'grimm', 'teen wolf', 'nip/tuck', 'dollhouse', '3rd rock from the sun', 'torchwood', 'leverage', 'hart of dixie', 'episodes', 'star wars: the clone wars', 'hey arnold!']
+let array_of_movies = ['third watch', 'john doe', 'devious maids', 'the tick', 'goosebumps', 'mortal kombat: legacy', 'taxi', 'heroes', 'grimm', 'teen wolf', 'nip/tuck', 'dollhouse', '3rd rock from the sun', 'torchwood', 'leverage', 'hart of dixie', 'episodes', 'star wars: the clone wars', 'hey arnold!']
 
 for(i = 0; i < array_of_movies.length; i++){
     request.get('http://www.omdbapi.com/?t=' + array_of_movies[i] + '&apikey=b4c680f4', (err, res, body) => {
@@ -11,7 +11,7 @@ for(i = 0; i < array_of_movies.length; i++){
             console.log(JSON.parse(body).Title);
         }
         else{
-            var b = JSON.parse(body);
+            let b = JSON.parse(body);
             console.log(b.imdbID + '  ' + b.Title);
             request.post('http://localhost:8080/api/show', {
             json: {
@@ -21,7 +21,7 @@ for(i = 0; i < array_of_movies.length; i++){
                 id: b.imdbID
             }
             
-            }, function(err, res, body){
+            }, (err, res, body) => {
                 if(!err && res.statusCode == 200){
                     console.log(body);
                 }
