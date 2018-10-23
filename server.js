@@ -12,11 +12,6 @@ const bodyParser = require('body-parser');
 const Show = require('./app/model/show');
 const Movie = require('./app/model/movie');
 
-// to automate some stuff
-const request = require('request');
-
-
-
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
@@ -139,4 +134,3 @@ router.route('/show/:show_id')
 app.use('/api', router);
 
 app.listen(port);
-console.log('api running on ' + port);
