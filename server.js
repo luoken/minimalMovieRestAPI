@@ -80,7 +80,7 @@ router.route('/search')
         }, (err, movie) => {
             if(err)
                 res.send(err);
-            
+
             movie.forEach((element) => {
                 var movie_type = {
                     _id: element._id,
@@ -91,14 +91,13 @@ router.route('/search')
                 }
                 array_of_searches.push(movie_type);
             }); 
-        });
+        }).limit(10);
 
         Show.find({
             title: regex
         }, (err, show) => {
             if(err)
                 res.send(err);
-
             show.forEach((element) => {
                 var show_type = {
                     _id: element._id,
@@ -110,7 +109,7 @@ router.route('/search')
                 array_of_searches.push(show_type);
             });
             res.json(array_of_searches);
-        });
+        }).limit(10);
     });
 
 
