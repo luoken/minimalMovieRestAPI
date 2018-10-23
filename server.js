@@ -25,33 +25,10 @@ mongoose.connect('mongodb://admin:temppass1@ds137263.mlab.com:37263/moviemeapi',
 
 const router = express.Router();
 
-// router.get('/', function(req, res){
-//     res.json({message: 'api working'});
-// });
 router.get('/', (req, res) => {
     res.json({message: 'api working'});
 });
 
-// router.route('/show')
-//     .post(function(req, res){
-//         var show = new Show();
-//         show.title = req.body.title;
-//         show.release_year = req.body.release_year;
-//         show.synopsis = req.body.synopsis;
-//         show._id = req.body.id;
-//         show.save(function(err){
-//             if(err)
-//                 res.send(err);
-//             res.json({message: 'Show saved'});
-//         });
-//     })
-//     .get(function(req, res){
-//         Show.find(function(err, shows){
-//             if(err)
-//                 res.send(err);
-//             res.json(shows);
-//         });
-//     });
 router.route('/show')
     .post((req, res)=> {
         let show = new Show();
@@ -94,37 +71,33 @@ router.route('/movie')
         });
     });
 
-// router.route('/movie')
-//     .post(function(req, res){
-//         var movie = new Movie();
-//         movie.title = req.body.title;
-//         movie.release_year = req.body.release_year;
-//         movie.synopsis = req.body.synopsis;
-//         movie._id = req.body.id;
-//         movie.save(function(err){
-//             if(err)
-//                 res.send(err);
-//             res.json({message: 'movie saved'});
-//         });
-//     })
-//     .get(function(req, res){
-//         Movie.find(function(err, movie){
-//             if(err)
-//                 res.send(err);
-//             res.json(movie);
-//         });
-//     });
+router.route('/search')
+    .get((req, res) => {
+        let array_of_searches = [];
+        // var match = '/.*req.query[\'query\'],*/'.toString();
 
-// router.route('/movie/:movie_id')
-//     .get(function(req, res){
-//         Movie.find({
-//             _id: req.params.movie_id
-//         }, function(err, movie){
-//             if(err)
-//                 res.send(err);
-//             res.json(movie);
-//         });
-//     });
+        // var match = /^req.query[\'query\']$/i;
+        // var match = new RegExp([".*", req.query['query'], ".*"].join(""));
+        var regex = new RegExp(["^.*", req.query['query'], ".*$"].join(""), "gi");
+        // var finalRegex = new RegExp(match.source + "|" + regex.source);
+        // console.log(finalRegex);
+        Movie.find({
+            // _id: req.query['query']
+            // /^bar$/i
+            title: regex
+        }, (err, movie) => {
+            if(err)
+                res.send(err);
+            // console.log('movie ' + show);
+            array_of_searches.push(movie);
+            res.json(array_of_searches)
+        });
+        // console.log(array_of_searches);
+        console.log(req.query['query']);
+
+
+    });
+
 
 router.route('/movie/:movie_id')
     .get((req, res) => {
@@ -137,6 +110,7 @@ router.route('/movie/:movie_id')
         });
     });
 
+
 router.route('/show/:show_id')
     .get((req, res) => {
         Show.find({
@@ -147,26 +121,6 @@ router.route('/show/:show_id')
             res.json(show);
         });
     });
-
-// router.route('/show/:show_id')
-//     .delete(function(req, res){
-//         Show.remove({
-//             _id: req.params.show_id
-//         }, function(err, show){
-//             if(err)
-//                 res.send(err)
-//             res.json({message: 'Deleted the show'});
-//         });
-//     })
-//     .get(function(req, res){
-//         Show.find({
-//             _id: req.params.show_id
-//         }, function(err, show){
-//             if(err)
-//                 res.send(err);
-//             res.json(show);
-//         });
-//     });
 
 app.use('/api', router);
 
